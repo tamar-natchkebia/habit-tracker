@@ -1,0 +1,177 @@
+:root {
+    --primary-purple: #9B5DE5;
+    --soft-lavender: #CDB4F6;
+    --deep-purple: #7B2CBF;
+    --primary-blue: #0999FF;
+    --soft-sky: #4CC9F0;
+    --off-white: #F8F9FA;
+    --bg-gray: #E6E1E8;
+    --dark-text: #2D2D2D;
+    --danger: #FF595E;
+    --warning: #FFD166;
+    
+    /* Mood Colors */
+    --mood-slay: #FAD0C4;
+    --mood-meh: #D1D9E0;
+    --mood-chaos: #A2D2FF;
+    --mood-gremlin: #BDB2FF;
+}
+
+body {
+    background-color: var(--bg-gray);
+    font-family: 'Public Sans', sans-serif;
+    color: var(--dark-text);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.4;
+    margin: 0;
+    transition: background-color 0.8s ease;
+}
+
+.app-container { max-width: 1200px; width: 95%; }
+
+/* XP CARD */
+.xp-card {
+    background: linear-gradient(135deg, #9B5DE5, #C77DFF);
+    border: 4px solid var(--dark-text);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 10px 10px 0px var(--dark-text);
+    margin-bottom: 20px;
+    color: white;
+    position: relative;
+}
+
+.lvl-pill {
+    background: var(--warning);
+    color: var(--dark-text);
+    padding: 4px 15px;
+    border-radius: 12px;
+    border: 3px solid var(--dark-text);
+    font-weight: 900;
+}
+
+.progress-track {
+    height: 24px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 12px;
+    border: 3px solid var(--dark-text);
+    margin-top: 15px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--soft-sky);
+    transition: width 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.btn-day-reset {
+    margin-top: 15px;
+    background: var(--danger);
+    color: white;
+    border: 3px solid var(--dark-text);
+    padding: 8px 15px;
+    border-radius: 12px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px var(--dark-text);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+/* VIBE CHECK SECTION */
+.vibe-zone {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.vibe-card {
+    background: white;
+    border: 4px solid var(--dark-text);
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: 6px 6px 0px var(--dark-text);
+}
+
+.vibe-title { font-weight: 900; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+.vibe-options { display: flex; justify-content: space-around; }
+
+.vibe-btn {
+    background: none; border: none; font-size: 1.5rem; cursor: pointer;
+    padding: 5px; border-radius: 10px; transition: 0.2s; filter: grayscale(1); opacity: 0.5;
+    display: flex; flex-direction: column; align-items: center;
+}
+
+.vibe-btn.active { filter: grayscale(0); opacity: 1; transform: scale(1.1); background: #f0f0f0; }
+.vibe-label { font-size: 0.7rem; font-weight: 800; display: block; margin-top: 5px; text-transform: uppercase; }
+
+/* HABITS */
+.add-zone { display: flex; gap: 10px; margin-bottom: 25px; width: 100%; }
+#habit-input {
+    flex: 1; padding: 15px; border: 4px solid var(--dark-text);
+    border-radius: 15px; font-weight: 900; box-shadow: 4px 4px 0px var(--dark-text);
+    outline: none;
+}
+
+.btn-add {
+    background: var(--primary-purple); color: white; border: 4px solid var(--dark-text);
+    border-radius: 15px; padding: 0 25px; font-weight: 900; cursor: pointer;
+    box-shadow: 4px 4px 0px var(--dark-text);
+}
+
+.habit-grid { 
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+    gap: 20px; margin-bottom: 30px; width: 100%;
+}
+
+.habit-card {
+    background: var(--off-white); border: 4px solid var(--dark-text);
+    border-radius: 20px; padding: 20px; display: flex; align-items: center;
+    gap: 20px; cursor: pointer; box-shadow: 6px 6px 0px var(--dark-text);
+    transition: 0.1s;
+}
+.habit-card.completed { background: var(--soft-lavender); border-color: var(--deep-purple); opacity: 0.8; }
+
+.icon-box {
+    width: 50px; height: 50px; background: var(--primary-blue);
+    border: 3px solid var(--dark-text); border-radius: 12px;
+    display: flex; flex-shrink: 0; align-items: center; justify-content: center; color: white;
+}
+
+.delete-btn { margin-left: auto; background: none; border: none; color: var(--dark-text); cursor: pointer; opacity: 0.3; }
+
+/* TIMER */
+.timer-card {
+    background: linear-gradient(135deg, #0999FF, #4CC9F0);
+    border: 4px solid var(--dark-text); border-radius: 20px;
+    padding: 25px; box-shadow: 10px 10px 0px var(--dark-text);
+    text-align: center; margin-bottom: 40px; width: 100%; box-sizing: border-box;
+}
+.timer-display { font-size: 4rem; font-weight: 900; color: white; text-shadow: 3px 3px 0px var(--dark-text); }
+.btn-timer { border: 3px solid var(--dark-text); padding: 10px 20px; border-radius: 15px; font-weight: 900; cursor: pointer; box-shadow: 4px 4px 0px var(--dark-text); }
+
+/* MODAL */
+.modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;
+    backdrop-filter: blur(5px);
+}
+.modal-content {
+    background: white; border: 5px solid var(--dark-text);
+    border-radius: 25px; padding: 30px; max-width: 400px; width: 90%;
+    box-shadow: 15px 15px 0px var(--dark-text); text-align: center;
+    transform: rotate(-1.5deg);
+}
+.modal-content h2 { margin-top: 0; color: var(--primary-purple); font-weight: 900; font-size: 1.8rem; }
+.modal-btns { display: flex; gap: 15px; justify-content: center; margin-top: 25px; }
+.btn-confirm { background: var(--primary-purple); color: white; border: 3px solid var(--dark-text); padding: 10px 20px; border-radius: 12px; font-weight: 900; cursor: pointer; box-shadow: 4px 4px 0px var(--dark-text); }
+.btn-cancel { background: #eee; border: 3px solid var(--dark-text); padding: 10px 20px; border-radius: 12px; font-weight: 900; cursor: pointer; box-shadow: 4px 4px 0px var(--dark-text); }
+
+.habit-info h3 { margin: 0; font-size: 1.1rem; font-weight: 900; text-transform: uppercase; }
+.habit-info p { margin: 0; font-size: 0.85rem; font-style: italic; opacity: 0.8; font-weight: 600; }
