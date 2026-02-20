@@ -3,249 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADHD Chaos Coordinator</title>
+    <title>Chaos Coordinator</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <div class="app-container">
     <div class="xp-card">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="xp-header">
             <span style="font-weight:900;">DOPAMINE STORAGE</span>
             <div class="lvl-pill">LVL <span id="lvl">1</span></div>
         </div>
         <div class="progress-track">
             <div id="xp-bar" class="progress-fill" style="width: 0%"></div>
         </div>
-        <button class="btn-day-reset" onclick="openResetModal()">☀️ Start New Day</button>
+        <div class="xp-footer">
+            <button class="btn-day-reset" onclick="openResetModal()">☀️ New Day</button>
+            <div class="streak-badge">🔥 <span id="streak-count">0</span> STREAK</div>
+        </div>
     </div>
 
-    <div class="vibe-zone">
+    <div class="dashboard-zone">
+        <div class="vibe-card compact-chart">
+            <span class="vibe-title" style="text-align:left">MOOD HISTORY</span>
+            <div class="chart-container">
+                <canvas id="historyChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="vibe-row">
         <div class="vibe-card">
-            <span class="vibe-title">MOOD SCAN:</span>
+            <span class="vibe-title">MOOD</span>
             <div class="vibe-options">
-                <button class="vibe-btn" data-mood="slay" onclick="setMood('slay', this)">✨<span class="vibe-label">Slay</span></button>
-                <button class="vibe-btn" data-mood="meh" onclick="setMood('meh', this)">😐<span class="vibe-label">Meh</span></button>
-                <button class="vibe-btn" data-mood="chaos" onclick="setMood('chaos', this)">🌀<span class="vibe-label">Chaos</span></button>
-                <button class="vibe-btn" data-mood="gremlin" onclick="setMood('gremlin', this)">👹<span class="vibe-label">Gremlin</span></button>
+                <div class="vibe-column"><span class="tiny-label">SLAY</span><button class="vibe-btn" data-mood="slay" onclick="setMood('slay', this)">✨</button></div>
+                <div class="vibe-column"><span class="tiny-label">VIBING</span><button class="vibe-btn" data-mood="meh" onclick="setMood('meh', this)">😐</button></div>
+                <div class="vibe-column"><span class="tiny-label">CHAOS</span><button class="vibe-btn" data-mood="chaos" onclick="setMood('chaos', this)">🌀</button></div>
+                <div class="vibe-column"><span class="tiny-label">CRASH</span><button class="vibe-btn" data-mood="gremlin" onclick="setMood('gremlin', this)">👹</button></div>
             </div>
         </div>
         <div class="vibe-card">
-            <span class="vibe-title">FUEL LEVEL:</span>
+            <span class="vibe-title">FUEL</span>
             <div class="vibe-options">
-                <button class="vibe-btn" data-energy="high" onclick="setEnergy('high', this)">🚀<span class="vibe-label">Zoomies</span></button>
-                <button class="vibe-btn" data-energy="mid" onclick="setEnergy('mid', this)">🔋<span class="vibe-label">Okay-ish</span></button>
-                <button class="vibe-btn" data-energy="low" onclick="setEnergy('low', this)">🪫<span class="vibe-label">Crispy</span></button>
-                <button class="vibe-btn" data-energy="potato" onclick="setEnergy('potato', this)">🥔<span class="vibe-label">Potato</span></button>
+                <div class="vibe-column"><span class="tiny-label">HIGH</span><button class="vibe-btn" data-energy="high" onclick="setEnergy('high', this)">🚀</button></div>
+                <div class="vibe-column"><span class="tiny-label">MID</span><button class="vibe-btn" data-energy="mid" onclick="setEnergy('mid', this)">🔋</button></div>
+                <div class="vibe-column"><span class="tiny-label">LOW</span><button class="vibe-btn" data-energy="low" onclick="setEnergy('low', this)">🪫</button></div>
+                <div class="vibe-column"><span class="tiny-label">NONE</span><button class="vibe-btn" data-energy="potato" onclick="setEnergy('potato', this)">🥔</button></div>
             </div>
         </div>
     </div>
 
     <div class="add-zone">
-        <input type="text" id="habit-input" placeholder="Add new task...">
+        <input type="text" id="habit-input" placeholder="Add task...">
         <button class="btn-add" onclick="addHabit()">+</button>
     </div>
 
     <div class="habit-grid" id="habit-list"></div>
 
     <div class="timer-card">
-        <h2 style="color:white; margin:0; font-weight:900;">GOBLIN MODE TIMER</h2>
+        <h2 class="timer-label">GOBLIN FOCUS</h2>
         <div class="timer-display" id="timer">05:00</div>
-        <div class="timer-controls" style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
-            <button id="timer-btn" class="btn-timer" style="background:var(--warning)" onclick="toggleTimer()">ACTIVATE FOCUS</button>
-            <button class="btn-timer" style="background:var(--danger); color:white" onclick="resetTimer()">RESET</button>
+        <div class="timer-controls">
+            <button id="timer-btn" class="btn-timer-primary" onclick="toggleTimer()">START SESSION</button>
+            <button class="btn-timer-secondary" onclick="resetTimer()">RESET</button>
         </div>
     </div>
 </div>
 
 <div class="modal-overlay" id="resetModal">
     <div class="modal-content">
-        <div style="font-size: 3rem;">⛅</div>
-        <h2>Fresh Start?</h2>
-        <p style="font-weight: 700;">Resetting tasks for a new day. Your LVL and XP will stay safe!</p>
+        <div class="modal-icon">🌅</div>
+        <h2>Start New Day?</h2>
+        <p>This will clear your tasks and lock in your mood today.</p>
         <div class="modal-btns">
-            <button class="btn-confirm" onclick="confirmReset()">DO IT!</button>
-            <button class="btn-cancel" onclick="closeResetModal()">CANCEL</button>
+            <button class="btn-confirm-reset" onclick="confirmReset()">HELL YES</button>
+            <button class="btn-cancel-reset" onclick="closeResetModal()">NOT YET</button>
         </div>
     </div>
 </div>
 
-<script>
-    const genericQuotes = ["Go get 'em.", "Dopamine pending...", "Future you says thanks.", "Executive function: ENGAGED."];
-    
-    let habits = JSON.parse(localStorage.getItem('myHabits')) || [
-        { id: 1, title: "Hydrate", quote: "Become a high-quality cucumber.", icon: "droplets", done: false },
-        { id: 2, title: "Teeth Bones", quote: "Brush 'em like you mean it.", icon: "sparkles", done: false },
-        { id: 3, title: "Movement", quote: "Calm the internal vibrating.", icon: "zap", done: false }
-    ];
-    
-    let xp = parseInt(localStorage.getItem('myXP')) || 0;
-    let lvl = parseInt(localStorage.getItem('myLVL')) || 1;
-    let currentVibes = JSON.parse(localStorage.getItem('currentVibes')) || { mood: 'none', energy: 'none' };
-    let timerInterval = null;
-    let timeLeft = 300; 
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal-content">
+        <div class="modal-icon">🗑️</div>
+        <h2>Delete Task?</h2>
+        <p>Are you sure you want to remove this habit?</p>
+        <div class="modal-btns">
+            <button class="btn-confirm-reset" id="confirmDeleteBtn" style="background: var(--danger)">DELETE</button>
+            <button class="btn-cancel-reset" onclick="closeDeleteModal()">KEEP IT</button>
+        </div>
+    </div>
+</div>
 
-    const moodColors = {
-        slay: '#FAD0C4',
-        meh: '#D1D9E0',
-        chaos: '#A2D2FF',
-        gremlin: '#BDB2FF',
-        none: '#E6E1E8'
-    };
-
-    function playDing(freq = 880) {
-        try {
-            const context = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = context.createOscillator();
-            const gain = context.createGain();
-            osc.type = 'sine'; osc.frequency.setValueAtTime(freq, context.currentTime);
-            gain.gain.setValueAtTime(0.1, context.currentTime);
-            osc.connect(gain); gain.connect(context.destination);
-            osc.start(); osc.stop(context.currentTime + 0.1);
-        } catch(e) {}
-    }
-
-    function setMood(value, btn) {
-        currentVibes.mood = value;
-        document.body.style.backgroundColor = moodColors[value];
-        document.querySelectorAll('.vibe-card:first-child .vibe-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        save();
-        playDing(1000);
-    }
-
-    function setEnergy(value, btn) {
-        currentVibes.energy = value;
-        document.querySelectorAll('.vibe-card:last-child .vibe-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        save();
-        playDing(1200);
-    }
-
-    function applySavedVibes() {
-        if (currentVibes.mood !== 'none') {
-            document.body.style.backgroundColor = moodColors[currentVibes.mood];
-            const btn = document.querySelector(`.vibe-btn[data-mood="${currentVibes.mood}"]`);
-            if (btn) btn.classList.add('active');
-        }
-        if (currentVibes.energy !== 'none') {
-            const btn = document.querySelector(`.vibe-btn[data-energy="${currentVibes.energy}"]`);
-            if (btn) btn.classList.add('active');
-        }
-    }
-
-    function openResetModal() { document.getElementById('resetModal').style.display = 'flex'; }
-    function closeResetModal() { document.getElementById('resetModal').style.display = 'none'; }
-    
-    function confirmReset() {
-        habits.forEach(h => h.done = false);
-        resetTimer();
-        save();
-        render();
-        closeResetModal();
-        playDing(660); 
-    }
-
-    function render() {
-        const list = document.getElementById('habit-list');
-        list.innerHTML = habits.map(h => `
-            <div class="habit-card ${h.done ? 'completed' : ''}" onclick="toggleHabit(${h.id})">
-                <div class="icon-box" style="background: ${h.done ? 'var(--primary-purple)' : 'var(--primary-blue)'}">
-                    <i data-lucide="${h.icon || 'star'}"></i>
-                </div>
-                <div class="habit-info">
-                    <h3>${h.title}</h3>
-                    <p>"${h.quote}"</p>
-                </div>
-                <button class="delete-btn" onclick="event.stopPropagation(); deleteHabit(${h.id})">
-                    <i data-lucide="trash-2"></i>
-                </button>
-            </div>
-        `).join('');
-        lucide.createIcons();
-    }
-
-    function addHabit() {
-        const input = document.getElementById('habit-input');
-        if (!input.value.trim()) return;
-        habits.push({ id: Date.now(), title: input.value, quote: genericQuotes[Math.floor(Math.random() * genericQuotes.length)], icon: "star", done: false });
-        input.value = ""; render(); save();
-    }
-
-    function deleteHabit(id) { habits = habits.filter(h => h.id !== id); render(); save(); }
-
-    function toggleHabit(id) {
-        const h = habits.find(x => x.id === id);
-        if (!h.done) {
-            xp += 20; playDing(880);
-            if (xp >= 100) { xp = 0; lvl++; }
-        } else {
-            xp -= 20;
-            if (xp < 0) { if (lvl > 1) { lvl--; xp = 80; } else { xp = 0; } }
-        }
-        h.done = !h.done;
-        updateXP(); render(); save();
-    }
-
-    function updateXP() {
-        document.getElementById('xp-bar').style.width = xp + "%";
-        document.getElementById('lvl').innerText = lvl;
-    }
-
-    function save() {
-        localStorage.setItem('myHabits', JSON.stringify(habits));
-        localStorage.setItem('myXP', xp); 
-        localStorage.setItem('myLVL', lvl);
-        localStorage.setItem('currentVibes', JSON.stringify(currentVibes));
-    }
-
-    function toggleTimer() {
-        const btn = document.getElementById('timer-btn');
-        if (timerInterval) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            btn.innerText = "RESUME";
-            btn.style.background = "var(--warning)";
-        } else {
-            btn.innerText = "PAUSE";
-            btn.style.background = "#eee";
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay();
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    timerInterval = null;
-                    document.getElementById('timer').innerText = "DONE!";
-                    xp += 50;
-                    if (xp >= 100) { xp -= 100; lvl++; }
-                    playDing(1200);
-                    updateXP();
-                    save();
-                }
-            }, 1000);
-        }
-    }
-
-    function resetTimer() {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        timeLeft = 300;
-        updateTimerDisplay();
-        const btn = document.getElementById('timer-btn');
-        btn.innerText = "ACTIVATE FOCUS";
-        btn.style.background = "var(--warning)";
-    }
-
-    function updateTimerDisplay() {
-        const m = Math.floor(timeLeft / 60);
-        const s = timeLeft % 60;
-        document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-    }
-
-    render();
-    updateXP();
-    applySavedVibes();
-</script>
+<script src="script.js"></script>
 </body>
 </html>

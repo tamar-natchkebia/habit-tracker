@@ -1,8 +1,8 @@
 # 🌀 ADHD Chaos Coordinator
 A dopamine-first task manager built to help neurodivergent brains navigate executive dysfunction through gamification and sensory cues.
 
-![Home](assets/habithome.png)
-![home](assets/habithome1.png)
+![Home](assets/habit1.png)
+![home](assets/habit3.png)
 ## ✨ Features
 * **Dopamine Storage (XP System):** Earn 20 XP per task. Levels are permanent because your progress shouldn't reset just because the sun went down.
 * **Mood-Based UI:** Change the entire app's atmosphere based on your current vibe (Slay, Meh, Chaos, or Gremlin).
